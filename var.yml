@@ -13,7 +13,23 @@
       - apple
       - banana
       - orange
-
+    #Dictionary variable
+    fruit_prices:
+      apple: 0.5
+      banana: 0.25
+      orange: 0.75
+    #Referencing nested variable
+    fruit_basket:
+      - name: John
+        fruits:
+          - apple
+          - orange
+      - name: Jane
+        fruits:
+          - banana
+          - apple
+  #vars_files:
+    #- my_vars.yml
   tasks:
     - name: String Variable from main_playbook_variable
       debug:
@@ -32,3 +48,47 @@
     - name: List variable - Print List of fruits
       debug:
         var: fruits
+
+    - name: Reference individual item in the list
+      debug:
+        var: fruits[0]
+
+    - name: Dictionary Variable - Accessing all dictionary variables
+      debug:
+        var: fruit_prices
+
+    - name: Accessing specific fruit price
+      debug:
+        var: fruit_prices.apple
+
+    - name: Get the price of an apple
+      command: echo "{{ fruit_prices['apple'] }}"
+      # Register the price of a apple to a new variable - apple_price
+      register: apple_price_as_registered_var
+
+    - name: Print the value of the register variable
+      debug:
+        var: apple_price_as_registered_var.stdout
+
+    - name: Get the value of the apple from the nested variable
+      debug:
+        var: fruit_prices[fruit_basket[0].fruits[0]]
+
+    #Jinja2 on filters
+    - name: Using Jinja 2 filters on variables
+      debug:
+        var: fruit_prices.keys() | list | map('upper') | list
+
+    #Accessing variable inside playbook from my-vars.yml
+    - name: Get the value of the variable from the my_vars.yml
+      debug:
+        var: vars_from_my_vars_file
+
+    #Defining and accessing variable at run time
+    #- name: Run time variable
+    #  debug:
+    #    var: version
+
+    - name: File name giving in run time
+      debug:
+        var: other_variable

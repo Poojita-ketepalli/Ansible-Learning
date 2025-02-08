@@ -1,0 +1,9 @@
+---
+- name: Example ansible playbook
+  hosts: all
+  remote_user: ubuntu
+  become: yes
+  roles:
+    - role: python
+  vars:
+    ansible_roles_path: /mnt/e/pws/ansible/roles

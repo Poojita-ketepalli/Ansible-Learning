@@ -1,0 +1,34 @@
+---
+- name: Example ansible playbook for variables
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+
+  vars:
+    main_playbook_variable: "Hello, world in main playbook"
+    is_enabled: true
+    is_disabled: false
+    #List variable
+    fruits:
+      - apple
+      - banana
+      - orange
+
+  tasks:
+    - name: String Variable from main_playbook_variable
+      debug:
+        var: main_playbook_variable
+
+    - name: Boolean Variable true
+      debug:
+        msg: "Variable is true"
+      when: is_enabled
+
+    - name: Boolean Variable false
+      debug:
+        msg: "Variable is true"
+      when: is_disabled
+
+    - name: List variable - Print List of fruits
+      debug:
+        var: fruits
